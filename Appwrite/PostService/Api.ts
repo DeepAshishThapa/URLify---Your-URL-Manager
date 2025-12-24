@@ -1,5 +1,6 @@
-import { Client, TablesDB, Permission, Role, ID, Query} from "appwrite";
+import { Client, TablesDB, Permission, Role, ID, Query } from "appwrite";
 import config from "@/config/config";
+import authservice from "../AuthService/Api";
 
 type createLinkInput = {
     url: string;
@@ -9,6 +10,9 @@ type createLinkInput = {
 
 
 }
+
+
+
 
 class PostService {
     private client = new Client;
@@ -22,7 +26,11 @@ class PostService {
         this.tablesDB = new TablesDB(this.client)
     }
 
-    async createLink({ url, description, userid, folderid }: createLinkInput) {
+    async createLink({ url, description, folderid }: createLinkInput) {
+
+        const userData = await authservice.getAccount()
+
+        const userid = userData.$id
 
 
         return await this.tablesDB.createRow({
@@ -47,22 +55,23 @@ class PostService {
 
     }
 
-    async listLinks(userid:string){
+    async listLinks(userid: string) {
         return await this.tablesDB.listRows({
-            databaseId:config.appwriteDatabaseId,
-            tableId:config.appwritePosttableId,
-            queries:[
-                Query.equal("userid",userid)
+            databaseId: config.appwriteDatabaseId,
+            tableId: config.appwritePosttableId,
+            queries: [
+                Query.equal("userid", userid)
             ]
         })
     }
-    
+
+
 
 
 
 }
 
-    
 
-}
+
+
 
