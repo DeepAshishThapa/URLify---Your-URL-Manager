@@ -1,4 +1,4 @@
-import { Client, TablesDB, Permission, Role, ID } from "appwrite";
+import { Client, TablesDB, Permission, Role, ID, Query} from "appwrite";
 import config from "@/config/config";
 
 type createLinkInput = {
@@ -25,7 +25,7 @@ class PostService {
     async createLink({ url, description, userid, folderid }: createLinkInput) {
 
 
-        const result = await this.tablesDB.createRow({
+        return await this.tablesDB.createRow({
             databaseId: config.appwriteDatabaseId,
             tableId: config.appwritePosttableId,
             rowId: ID.unique(),
@@ -37,7 +37,7 @@ class PostService {
             },
             permissions: [
                 Permission.read(Role.user(userid)),
-                     Permission.update(Role.user(userid)),  
+                Permission.update(Role.user(userid)),
                 Permission.delete(Role.user(userid)),
 
             ]
@@ -46,6 +46,17 @@ class PostService {
         })
 
     }
+
+    async listLinks(userid:string){
+        return await this.tablesDB.listRows({
+            databaseId:config.appwriteDatabaseId,
+            tableId:config.appwritePosttableId,
+            queries:[
+                Query.equal("userid",userid)
+            ]
+        })
+    }
+    
 
 
 
