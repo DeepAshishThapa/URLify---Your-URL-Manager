@@ -36,7 +36,8 @@ class PostService{
             rowId:ID.unique(),
             data:{
                 name,
-                isSystem
+                isSystem,
+                userid
             },
             permissions:[
                 Permission.read(Role.user(userid)),
@@ -83,6 +84,7 @@ class PostService{
     }
 
     
-
     
 }
+const postservice=new PostService()
+export default postservice
