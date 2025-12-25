@@ -73,6 +73,15 @@ class PostService{
 
     }
 
+    async deleteFolder(rowId:string){
+        return await this.tablesDB.deleteRow({
+            databaseId:config.appwriteDatabaseId,
+            tableId:config.appwriteFoldertableId,
+            rowId
+        })
+
+    }
+
     
 
     
