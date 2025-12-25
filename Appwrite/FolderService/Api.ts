@@ -1,4 +1,4 @@
-import { Client, TablesDB, Permission, Role,ID } from "appwrite";
+import { Client, TablesDB, Permission, Role,ID, Query } from "appwrite";
 import config from "@/config/config";
 import authservice from "../AuthService/Api";
 
@@ -47,6 +47,18 @@ class PostService{
         })
 
     }
+
+    async listLinks(userid:string){
+        return await this.tablesDB.listRows({
+            databaseId:config.appwriteDatabaseId,
+            tableId:config.appwriteFoldertableId,
+            queries:[
+                Query.equal("userid",userid)
+            ]
+        })
+    }
+
+    
 
     
 }
