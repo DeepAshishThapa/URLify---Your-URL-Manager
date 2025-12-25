@@ -1,10 +1,15 @@
 import { Client, TablesDB, Permission, Role,ID } from "appwrite";
 import config from "@/config/config";
+import authservice from "../AuthService/Api";
 
 type createFolderInput={
     name:string,
     isSystem:boolean,
     
+}
+
+type updateFolderInput={
+    name?:string
 }
 
 class PostService{
@@ -21,6 +26,9 @@ class PostService{
     }
 
     async createFolder({name,isSystem}:createFolderInput){
+        const userData=await authservice.getAccount()
+        const userid=userData.$id
+
         return await this.tablesDB.createRow({
             databaseId:config.appwriteDatabaseId,
             tableId:config.appwriteFoldertableId,
@@ -28,9 +36,17 @@ class PostService{
             data:{
                 name,
                 isSystem
-            }
+            },
+            permissions:[
+                Permission.read(Role.user(userid)),
+                Permission.update(Role.user(userid)),
+                Permission.delete(Role.user(userid))
+
+            ]
 
         })
 
     }
+
+    
 }
