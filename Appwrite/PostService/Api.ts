@@ -9,6 +9,12 @@ type createLinkInput = {
 
 
 }
+type updateLinkInput={
+    rowId:string
+    url?:string,
+    description?:string;
+    folderid?:string
+}
 
 
 
@@ -64,11 +70,16 @@ class PostService {
         })
     }
 
-    async updateLink(rowId:string){
+    async updateLink({rowId,url,description,folderid}:updateLinkInput){
         return await this.tablesDB.updateRow({
             databaseId:config.appwriteDatabaseId,
             tableId:config.appwritePosttableId,
-            rowId
+            rowId,
+            data:{
+                url,
+                description,
+                folderid
+            }
 
         })
     }
