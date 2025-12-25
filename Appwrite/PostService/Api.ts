@@ -5,7 +5,6 @@ import authservice from "../AuthService/Api";
 type createLinkInput = {
     url: string;
     description: string;
-    userid: string;
     folderid: string;
 
 
@@ -68,7 +67,7 @@ class PostService {
     async updateLink(rowId:string){
         return await this.tablesDB.updateRow({
             databaseId:config.appwriteDatabaseId,
-            tableId:config.appwriteFoldertableId,
+            tableId:config.appwritePosttableId,
             rowId
 
         })
@@ -77,7 +76,7 @@ class PostService {
     async deleteLink(rowId:string){
         return await this.tablesDB.deleteRow({
             databaseId:config.appwriteDatabaseId,
-            tableId:config.appwriteFoldertableId,
+            tableId:config.appwritePosttableId,
             rowId
 
 
@@ -86,6 +85,9 @@ class PostService {
 
 
 }
+
+const postservice=new PostService()
+export default postservice
 
 
 
