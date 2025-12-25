@@ -9,6 +9,7 @@ type createFolderInput={
 }
 
 type updateFolderInput={
+    rowId:string,
     name?:string
 }
 
@@ -48,7 +49,7 @@ class PostService{
 
     }
 
-    async listLinks(userid:string){
+    async listFolders(userid:string){
         return await this.tablesDB.listRows({
             databaseId:config.appwriteDatabaseId,
             tableId:config.appwriteFoldertableId,
@@ -56,6 +57,20 @@ class PostService{
                 Query.equal("userid",userid)
             ]
         })
+    }
+
+    async updateFolder({rowId,name}:updateFolderInput){
+        return await this.tablesDB.updateRow({
+            databaseId:config.appwriteDatabaseId,
+            tableId:config.appwriteFoldertableId,
+            rowId,
+            data:{
+                name
+            }
+
+        })
+
+
     }
 
     
