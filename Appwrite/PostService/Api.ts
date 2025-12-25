@@ -65,8 +65,24 @@ class PostService {
         })
     }
 
+    async updateLink(rowId:string){
+        return await this.tablesDB.updateRow({
+            databaseId:config.appwriteDatabaseId,
+            tableId:config.appwriteFoldertableId,
+            rowId
+
+        })
+    }
+
+    async deleteLink(rowId:string){
+        return await this.tablesDB.deleteRow({
+            databaseId:config.appwriteDatabaseId,
+            tableId:config.appwriteFoldertableId,
+            rowId
 
 
+        })
+    }
 
 
 }
