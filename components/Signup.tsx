@@ -12,6 +12,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@radix-ui/react-label'
+import authservice from '@/Appwrite/AuthService/Api'
+import { login } from '@/Appwrite/AuthService/authSlice'
+import { useDispatch } from 'react-redux'
 
 import { useForm, SubmitHandler } from "react-hook-form"
 
@@ -25,6 +28,8 @@ type Inputs = {
 
 function Signup() {
 
+    const dispatch=useDispatch()
+
     const {
         register,
         handleSubmit,
@@ -32,7 +37,22 @@ function Signup() {
 
     } = useForm<Inputs>()
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        try {
+            
+            const res = await authservice.createAccount(data)
+             const userData = await authservice.getAccount();
+
+            // Automatically log user in and update Redux state
+            dispatch(login(userData));
+
+            console.log(res)
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+  
 
     return (
         <>
@@ -116,6 +136,8 @@ function Signup() {
                 </CardContent>
 
             </Card>
+
+            
 
         </>
     )
