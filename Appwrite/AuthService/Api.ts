@@ -1,5 +1,5 @@
 import { Client, Account, ID } from "appwrite"
-import config from "../../config/config"
+import config from "@/config/config";
 
 type createAccountInput = {
     email: string;
@@ -15,11 +15,12 @@ type LoginInput = {
 }
 
 class AuthService {
-    private client = new Client()
-    private account;
+    private client 
+    private account
 
     constructor() {
-        this.client
+        
+         this.client = new Client()
             .setEndpoint(config.appwriteURL)
             .setProject(config.appwriteProjectId)
 
@@ -50,17 +51,16 @@ class AuthService {
         })
     }
 
-    async getAccount(){
+    async getAccount() {
         return await this.account.get()
-        
+
     }
 
-    async Logout(){
+    async Logout() {
         return await this.account.deleteSessions()
     }
 
 }
 
-const authservice= new AuthService()
-
+const authservice=new AuthService()
 export default authservice
