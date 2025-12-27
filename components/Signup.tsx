@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import {
     Card,
@@ -12,7 +13,27 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@radix-ui/react-label'
 
+import { useForm, SubmitHandler } from "react-hook-form"
+
+
+type Inputs = {
+    name: string
+    email: string
+    password: string
+}
+
+
 function Signup() {
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+
+    } = useForm<Inputs>()
+
+    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+
     return (
         <>
             <Card className="w-full max-w-md">
@@ -22,7 +43,7 @@ function Signup() {
 
                 </CardHeader>
                 <CardContent>
-                    <form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-2">
                                 <Label htmlFor="name">Name</Label>
@@ -31,7 +52,15 @@ function Signup() {
 
                                     placeholder="name"
                                     required
+                                    {...register("name", {
+                                        minLength: { value: 2, message: "Name must be at least 2 characters" },
+                                    }
+
+                                    )}
                                 />
+                                {errors.name && (
+                                    <p className="text-sm text-red-500">{errors.name.message}</p>
+                                )}
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
@@ -40,31 +69,52 @@ function Signup() {
                                     type="email"
                                     placeholder="m@example.com"
                                     required
+                                    {...register("email", {
+                                        pattern: {
+                                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                            message: "Enter a valid email address",
+                                        }
+                                    }
+
+                                    )}
                                 />
+                                {errors.email && (
+                                    <p className="text-sm text-red-500">{errors.email.message}</p>
+                                )}
                             </div>
                             <div className="grid gap-2">
                                 <div className="flex items-center">
                                     <Label htmlFor="password">Password</Label>
 
                                 </div>
-                                <Input id="password" type="password" required />
+                                <Input id="password" type="password" required
+                                    {...register("password", {
+                                        minLength: { value: 8, message: "Password must be at least 8 characters" }
+                                    }
+
+                                    )}
+                                />
+                                {errors.password && (
+                                    <p className="text-sm text-red-500">{errors.password.message}</p>
+                                )}
                             </div>
-                            <div className="grid gap-2">
+                            {/* <div className="grid gap-2">
                                 <div className="flex items-center">
                                     <Label htmlFor="confirmpassword">Confirm Password</Label>
 
                                 </div>
                                 <Input id="confirmpassword" type="password" required />
-                            </div>
+                            </div> */}
                         </div>
+                        <CardFooter className="flex-col gap-2 mt-10">
+                            <Button type="submit" className="w-full" disabled={isSubmitting}>
+                                {isSubmitting ? "Submitting..." : "Signup"}
+                            </Button>
+
+                        </CardFooter>
                     </form>
                 </CardContent>
-                <CardFooter className="flex-col gap-2">
-                    <Button type="submit" className="w-full">
-                        Signup
-                    </Button>
 
-                </CardFooter>
             </Card>
 
         </>
