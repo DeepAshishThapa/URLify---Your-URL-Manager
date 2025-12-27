@@ -8,11 +8,11 @@ interface AppwriteConfig {
 }
 
 const config: AppwriteConfig = {
-    appwriteURL: String(process.env.NEXT_PUBLIC_APPWRITE_URL),
-    appwriteProjectId: String(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID),
-    appwriteDatabaseId: String(process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID),
-    appwritePosttableId: String(process.env.NEXT_PUBLIC_APPWRITE_POSTTABLE_ID),
-    appwriteFoldertableId: String(process.env.NEXT_PUBLIC_APPWRITE_FOLDERTABLE_ID)
+    appwriteURL: process.env.NEXT_PUBLIC_APPWRITE_URL!,
+    appwriteProjectId: process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!,
+    appwriteDatabaseId: process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+    appwritePosttableId: process.env.NEXT_PUBLIC_APPWRITE_POSTTABLE_ID!,
+    appwriteFoldertableId: process.env.NEXT_PUBLIC_APPWRITE_FOLDERTABLE_ID!
 
 
 
