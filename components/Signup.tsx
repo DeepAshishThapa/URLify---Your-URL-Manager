@@ -15,8 +15,10 @@ import { Label } from '@radix-ui/react-label'
 import authservice from '@/Appwrite/AuthService/Api'
 import { login } from '@/Appwrite/AuthService/authSlice'
 import { useDispatch } from 'react-redux'
-
+import { useState } from 'react'
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useForm, SubmitHandler } from "react-hook-form"
+import { useRouter } from 'next/navigation'
 
 
 type Inputs = {
@@ -27,6 +29,12 @@ type Inputs = {
 
 
 function Signup() {
+    const router=useRouter()
+
+    const [status,setStatus]=useState<"error" | "success" | null>(null)
+
+    const [message,setmessage]=useState("")
+
 
     const dispatch=useDispatch()
 
@@ -40,15 +48,29 @@ function Signup() {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
             
-            const res = await authservice.createAccount(data)
+             await authservice.createAccount(data)
              const userData = await authservice.getAccount();
 
             // Automatically log user in and update Redux state
             dispatch(login(userData));
 
-            console.log(res)
-        } catch (error) {
-            console.log(error)
+            setStatus("success")
+
+            setTimeout(() => {
+                router.push("/");
+
+                
+            }, 1200);
+
+
+
+
+
+            
+        } catch (error:any) {
+            console.log(error.message)
+            setStatus("error")
+            setmessage(error.message)
         }
 
     }
@@ -56,13 +78,30 @@ function Signup() {
 
     return (
         <>
-            <Card className="w-full max-w-md">
+            <Card className="w-full max-w-lg">
                 <CardHeader>
                     <CardTitle>Create a new account</CardTitle>
 
 
                 </CardHeader>
                 <CardContent>
+                    {status && (
+                         <Alert
+                            variant={status === "error" ? "destructive" : "default"}
+                            className="mb-4"
+                        >
+                            <AlertTitle>
+                                {status === "success" ? "Signup successful" : message}
+                            </AlertTitle>
+                            <AlertDescription>
+                                {status === "success" && "Redirecting you to home..." }
+                            </AlertDescription>
+                        </Alert>
+                        
+                    )
+
+                    
+                     }
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-2">
