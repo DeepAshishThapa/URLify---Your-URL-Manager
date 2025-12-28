@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+
 import {
     Card,
     CardAction,
@@ -18,7 +18,8 @@ import authservice from '@/Appwrite/AuthService/Api'
 import { useDispatch } from 'react-redux'
 import { login } from '@/Appwrite/AuthService/authSlice'
 import { useRouter } from 'next/navigation'
-
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useState } from 'react'
 
 type Inputs = {
     email: string,
@@ -29,6 +30,10 @@ type Inputs = {
 
 
 function Login() {
+
+    const [status, setStatus] = useState<"success" | "error" | null>(null)
+
+    const [message, setmessage] = useState("")
 
     const router = useRouter();
 
@@ -43,17 +48,22 @@ function Login() {
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
-             await authservice.Login(data)
+            await authservice.Login(data)
             const userData = await authservice.getAccount()
             dispatch(login(userData))
+
+            setStatus("success")
 
             setTimeout(() => {
                 router.push("/");
             }, 1200);
 
         }
-        catch(error){
+        catch (error: any) {
             console.log(error)
+            setStatus("error")
+            setmessage(error.message)
+
         }
 
 
@@ -75,6 +85,19 @@ function Login() {
 
                 </CardHeader>
                 <CardContent>
+                    {status && (
+                        <Alert
+                            variant={status === "error" ? "destructive" : "default"}
+                            className="mb-4"
+                        >
+                            <AlertTitle>
+                                {status === "success" ? "Login successful" : message}
+                            </AlertTitle>
+                            <AlertDescription>
+                                {status === "success" && "Redirecting you to home..." }
+                            </AlertDescription>
+                        </Alert>
+                    )}
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-2">
@@ -112,8 +135,8 @@ function Login() {
                             </div>
                         </div>
                         <CardFooter className="flex-col gap-2 mt-10">
-                            <Button type="submit" className="w-full">
-                                Login
+                            <Button type="submit" className="w-full" disabled={isSubmitting}>
+                                {isSubmitting ? "Logging in..." : "Login"}
                             </Button>
 
                         </CardFooter>
@@ -121,6 +144,9 @@ function Login() {
                 </CardContent>
 
             </Card>
+
+
+
 
         </>
     )
