@@ -2,6 +2,8 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import Menubar from "./Menubar"
+
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import type { RootState } from "../store/store"
@@ -9,6 +11,7 @@ import authservice from "@/Appwrite/AuthService/Api"
 import { logout } from "@/Appwrite/AuthService/authSlice"
 import { useEffect, useState } from "react"
 import { User } from "lucide-react"
+
 
 export default function Navbar() {
   const dispatch = useDispatch()
@@ -62,10 +65,18 @@ export default function Navbar() {
     <>
 
       <nav className="w-full flex items-center justify-between px-4 py-3 border-b">
+        <div className="flex items-center gap-10">
+           <Menubar/>
+        
         <Button variant="outline" size="sm" asChild>
           <Link href="/">Home</Link>
 
         </Button>
+
+        </div>
+       
+        
+        
 
 
 
