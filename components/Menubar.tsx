@@ -123,8 +123,17 @@ export default function Menubar() {
     const exists = folders.some((f) => f.name.toLowerCase() === name.toLowerCase());
     if (exists) return;
 
-    const created = await folderservice.createFolder({name:folderName,isSystem:false})
-    setFolders((prev) => [...prev, created]);
+    try{
+      const created = await folderservice.createFolder({name:folderName,isSystem:false})
+      setFolders((prev) => [...prev, created]);
+
+    }
+    catch(error){
+      console.log("adding failed",error)
+    }
+
+    
+    
 
     setFolderName("");
     setAddingFolder(false);
