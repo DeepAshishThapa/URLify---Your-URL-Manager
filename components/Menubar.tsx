@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Menu, Plus, Trash2, Pencil, Check, X } from "lucide-react";
 import authservice from "@/Appwrite/AuthService/Api";
 import folderservice from "@/Appwrite/FolderService/Api";
+import { useRouter } from "next/navigation";
 import postservice from "@/Appwrite/PostService/Api";
 
 
@@ -33,6 +34,7 @@ type ActiveView =
 
 // -------------------- Component --------------------
 export default function Menubar() {
+  const router = useRouter();
   const [userid, setUserid] = useState<string | null>(null);
 
   const [folders, setFolders] = useState<any[]>([])
@@ -272,9 +274,10 @@ export default function Menubar() {
                   <Button
                     variant={isActive ? "secondary" : "ghost"}
                     className="flex-1 justify-start"
-                    onClick={() =>
+                    onClick={() =>{
                       setActiveView({ type: "folder", folderId: folder.$id })
-                    }
+                      router.push(`/${folder.$id}`);
+                    }}
                   >
                     {isEditing ? (
                       <Input
