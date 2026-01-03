@@ -197,7 +197,10 @@ export default function Menubar() {
           <Button
             variant={activeView.type === "all" ? "secondary" : "ghost"}
             className="w-full justify-start"
-            onClick={() => setActiveView({ type: "all" })}
+            onClick={
+              () => {setActiveView({ type: "all" })
+              router.push("/folders/All")}
+            }
           >
             All
           </Button>
@@ -276,7 +279,7 @@ export default function Menubar() {
                     className="flex-1 justify-start"
                     onClick={() =>{
                       setActiveView({ type: "folder", folderId: folder.$id })
-                      router.push(`/${folder.$id}`);
+                      router.push(`/folders/${folder.$id}`);
                     }}
                   >
                     {isEditing ? (
