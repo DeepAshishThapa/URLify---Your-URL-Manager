@@ -12,6 +12,7 @@ import { logout } from "@/Appwrite/AuthService/authSlice"
 import { useEffect, useState } from "react"
 import { User, Plus } from "lucide-react"
 import { usePathname } from "next/navigation"
+import Popup from "./Popup"
 
 
 export default function Navbar() {
@@ -81,12 +82,7 @@ export default function Navbar() {
           </Button>
 
            {showAddLink && (
-          <Button size="sm" asChild>
-            <Link href="/add-link" className="flex items-center gap-1">
-              <Plus size={16} />
-               Link
-            </Link>
-          </Button>
+          <Popup/>
         )}
 
         </div>
