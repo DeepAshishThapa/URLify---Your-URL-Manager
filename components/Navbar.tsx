@@ -10,15 +10,22 @@ import type { RootState } from "../store/store"
 import authservice from "@/Appwrite/AuthService/Api"
 import { logout } from "@/Appwrite/AuthService/authSlice"
 import { useEffect, useState } from "react"
-import { User } from "lucide-react"
+import { User, Plus } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 
 export default function Navbar() {
   const dispatch = useDispatch()
+  const pathname = usePathname()
 
   const [userName, setuserName] = useState("")
 
   const authStatus = useSelector((state: RootState) => state.auth.status)
+
+  const hideAddLinkRoutes = ["/login", "/signup"]
+  const showAddLink =
+    !hideAddLinkRoutes.includes(pathname)
+
 
   const authcomps = [
     { name: "Login", path: "/login", active: !authStatus },
@@ -64,24 +71,33 @@ export default function Navbar() {
   return (
     <>
 
-      <nav className="w-full flex items-center justify-between px-4 py-3 border-b">
-        <div className="flex items-center gap-10">
-           <Menubar/>
-        
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/">Home</Link>
+      <nav className="w-full flex items-center justify-between  px-4 py-3 border-b">
+        <div className="flex items-center gap-5 ">
+          <Menubar />
 
-        </Button>
+          <Button variant="outline" size="sm" className="hidden sm:inline-flex" asChild>
+            <Link href="/">Home</Link>
+
+          </Button>
+
+           {showAddLink && (
+          <Button size="sm" asChild>
+            <Link href="/add-link" className="flex items-center gap-1">
+              <Plus size={16} />
+               Link
+            </Link>
+          </Button>
+        )}
 
         </div>
-       
-        
-        
 
 
 
 
-        <div className="flex items-center gap-5">
+
+
+
+        <div className="flex items-center gap-5 ">
 
           {userName && (
             <div className="flex">
