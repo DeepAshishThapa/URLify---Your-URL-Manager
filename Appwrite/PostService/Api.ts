@@ -4,7 +4,7 @@ import authservice from "../AuthService/Api";
 
 type createLinkInput = {
     url: string;
-    description: string;
+    description?: string;
     folderid: string;
 
 
