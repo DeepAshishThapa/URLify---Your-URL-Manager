@@ -33,6 +33,7 @@ import {
 
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 
 // =======================
@@ -69,15 +70,20 @@ function Popup() {
         },
     })
 
+    const [status,setstatus]=useState<"error" | "success" | null>(null)
+    // const [message,setmessage]=useState<string>("")
+
     const { register, formState: { errors, isSubmitting } } = form
 
     //  submit handler
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
             const result = await postservice.createLink(data)
+            setstatus("success")
 
         } catch (error) {
             console.log(error)
+            setstatus("error")
         }
     }
 
@@ -115,6 +121,17 @@ function Popup() {
                 <DialogHeader>
                     <DialogTitle>Add new link</DialogTitle>
                 </DialogHeader>
+                {status && (
+                        <Alert
+                            variant={status === "error" ? "destructive" : "default"}
+                            className="mb-4"
+                        >
+                            <AlertTitle>
+                                {status === "success" ? "Link added successful":"Error when adding link"}
+                            </AlertTitle>
+                            
+                        </Alert>
+                    )}
 
                 {/*  shadcn Form wrapper */}
                 <Form {...form}>
