@@ -101,6 +101,15 @@ class PostService {
 
     }
 
+    async getFolder(rowId:string){
+        return await this.tablesDB.getRow({
+             databaseId: config.appwriteDatabaseId,
+            tableId: config.appwriteFoldertableId,
+            rowId
+        })
+
+    }
+
 
 
 }
