@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import folderservice from "@/Appwrite/FolderService/Api"
 import postservice from "@/Appwrite/PostService/Api"
-import authservice from "@/Appwrite/AuthService/Api"
+
 import {
   Card,
   CardAction,
@@ -14,6 +14,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { useSelector } from "react-redux"
+import { RootState } from "@/store/store"
 
 type linkinput={
   readonly $id:string,
@@ -27,11 +29,13 @@ type linkinput={
 function Page() {
   const params = useParams()
   const folderId = params?.folderId as string | undefined
+  const userData = useSelector((state: RootState) => state.auth.userData)
+  const userid = userData?.$id ?? null
 
   const [folder, setFolder] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [links, setlinks] = useState<any>(null)
-  const [userid, setuserid] = useState<null | string>(null)
+  
 
   useEffect(() => {
     if (!folderId) return
@@ -42,15 +46,7 @@ function Page() {
     })
   }, [folderId])
 
-  useEffect(() => {
-    authservice.getAccount().then((res) => {
-      setuserid(res.$id)
-    })
-      .catch((error) => {
-        console.log(error)
-      })
-
-  }, [])
+  
 
   useEffect(() => {
     if (!userid || !folderId) return
@@ -59,7 +55,7 @@ function Page() {
       setlinks(res.rows)
     })
 
-  }, [userid, folderId])
+  }, [userid,folderId])
 
   if (loading) {
     return <p>Loading...</p>
