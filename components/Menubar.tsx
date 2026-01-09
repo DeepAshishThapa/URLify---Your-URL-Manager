@@ -16,6 +16,9 @@ import folderservice from "@/Appwrite/FolderService/Api";
 import { useRouter } from "next/navigation";
 import postservice from "@/Appwrite/PostService/Api";
 
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store"
+
 
 
 type folder={
@@ -34,6 +37,8 @@ type ActiveView =
 
 // -------------------- Component --------------------
 export default function Menubar() {
+  const authStatus = useSelector((state: RootState) => state.auth.status)
+
   const router = useRouter();
   const [userid, setUserid] = useState<string | null>(null);
 
@@ -49,15 +54,19 @@ export default function Menubar() {
   const [editingName, setEditingName] = useState("");
 
   useEffect(() => {
-    authservice.getAccount().then((res) => {
-      setUserid(res.$id)
+  if (!authStatus) {
+    //  logout cleanup
+    setUserid(null)
+    setFolders([])
+    setActiveView({ type: "all" })
+    return
+  }
 
-    })
-      .catch((error) => {
-        console.log(error)
-      })
+  authservice.getAccount()
+    .then((res) => setUserid(res.$id))
+    .catch(() => setUserid(null))
 
-  }, [])
+}, [authStatus])
 
 
   // -------------------- Load folders --------------------
