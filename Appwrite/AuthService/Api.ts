@@ -52,6 +52,7 @@ class AuthService {
     }
 
     async getAccount() {
+        
         return await this.account.get()
 
     }
