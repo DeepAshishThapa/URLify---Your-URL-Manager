@@ -11,11 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Menu, Plus, Trash2, Pencil, Check, X } from "lucide-react";
-import authservice from "@/Appwrite/AuthService/Api";
 import folderservice from "@/Appwrite/FolderService/Api";
 import { useRouter } from "next/navigation";
-import postservice from "@/Appwrite/PostService/Api";
-
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store"
 
@@ -37,10 +34,11 @@ type ActiveView =
 
 // -------------------- Component --------------------
 export default function Menubar() {
-  const authStatus = useSelector((state: RootState) => state.auth.status)
+  const userData = useSelector((state: RootState) => state.auth.userData)
+  const userid = userData?.$id ?? null
 
   const router = useRouter();
-  const [userid, setUserid] = useState<string | null>(null);
+  
 
   const [folders, setFolders] = useState<any[]>([])
   const [activeView, setActiveView] = useState<ActiveView>({ type: "all" });
@@ -53,20 +51,7 @@ export default function Menubar() {
   const [editingFolderId, setEditingFolderId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState("");
 
-  useEffect(() => {
-  if (!authStatus) {
-    //  logout cleanup
-    setUserid(null)
-    setFolders([])
-    setActiveView({ type: "all" })
-    return
-  }
-
-  authservice.getAccount()
-    .then((res) => setUserid(res.$id))
-    .catch(() => setUserid(null))
-
-}, [authStatus])
+  
 
 
   // -------------------- Load folders --------------------
@@ -94,7 +79,7 @@ export default function Menubar() {
     if (existing.total > 0) return;
 
     // create if not exists
-    await folderservice.createFolder({ name: "unsaved", isSystem: true })
+    await folderservice.createFolder({ name: "unsaved", isSystem: true,userid })
   }
 
 
@@ -135,7 +120,7 @@ export default function Menubar() {
     if (exists) return;
 
     try{
-      const created = await folderservice.createFolder({name:folderName,isSystem:false})
+      const created = await folderservice.createFolder({name:folderName,isSystem:false,userid})
       setFolders((prev) => [...prev, created]);
 
     }
