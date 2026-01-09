@@ -187,7 +187,7 @@ export default function Menubar() {
         </Button>
       </SheetTrigger>
 
-      <SheetContent side="left" className="w-[340px]">
+      <SheetContent side="left" className="w-85">
         <SheetHeader>
           <SheetTitle>Folders</SheetTitle>
         </SheetHeader>
@@ -199,7 +199,7 @@ export default function Menubar() {
             className="w-full justify-start"
             onClick={
               () => {setActiveView({ type: "all" })
-              router.push("/folders/All")}
+              router.push("/")}
             }
           >
             All
