@@ -70,6 +70,18 @@ class PostService {
         })
     }
 
+    async listfolderlinks(userid:string,folderid:string){
+        return await this.tablesDB.listRows({
+            databaseId: config.appwriteDatabaseId,
+            tableId: config.appwritePosttableId,
+            queries: [
+                Query.equal("userid", userid),
+                Query.equal("folderid",folderid)
+            ]
+
+        })
+    }
+
     async updateLink({rowId,url,description,folderid}:updateLinkInput){
         return await this.tablesDB.updateRow({
             databaseId:config.appwriteDatabaseId,
