@@ -5,6 +5,7 @@ import authservice from "../AuthService/Api";
 type createFolderInput = {
     name: string,
     isSystem: boolean,
+    userid:string
 
 }
 
@@ -27,9 +28,8 @@ class PostService {
 
     }
 
-    async createFolder({ name, isSystem }: createFolderInput) {
-        const userData = await authservice.getAccount()
-        const userid = userData.$id
+    async createFolder({ name, isSystem,userid }: createFolderInput) {
+        
 
         return await this.tablesDB.createRow({
             databaseId: config.appwriteDatabaseId,
