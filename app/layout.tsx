@@ -34,7 +34,11 @@ export default function RootLayout({
       >
         <Providers>
           <Navbar />
-          {children}
+          <div className="px-5 md:px-20 py-2 space-y-6 ">
+            {children}
+
+          </div>
+          
         </Providers>
       </body>
     </html>
