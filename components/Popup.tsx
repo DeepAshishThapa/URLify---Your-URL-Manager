@@ -1,6 +1,6 @@
 "use client"
 
-import  { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Dialog,
   DialogContent,
@@ -72,7 +72,7 @@ export default function Popup() {
     },
   })
 
-    const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
 
   const { isSubmitting } = form.formState
 
@@ -81,22 +81,25 @@ export default function Popup() {
   const [folders, setFolders] = useState<any[]>([])
 
   // -------------------- Fetch folders --------------------
-  useEffect(() => {
+  const fetchFolders = async () => {
     if (!userid) {
       setFolders([])
       return
     }
 
-    folderservice.listFolders(userid).then((res) => {
+    try {
+      const res = await folderservice.listFolders(userid)
       setFolders(res.rows)
-    })
-  }, [userid])
-
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   /* -------------------- Reset state on open -------------------- */
   useEffect(() => {
     if (open) {
       setStatus(null)
+      fetchFolders()
     }
   }, [open])
 
@@ -110,7 +113,7 @@ export default function Popup() {
 
     try {
       await postservice.createLink(data
-        
+
       )
 
       setStatus("success")
