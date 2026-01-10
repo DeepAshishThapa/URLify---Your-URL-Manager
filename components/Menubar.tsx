@@ -216,9 +216,10 @@ export default function Menubar() {
                   key={folder.$id}
                   variant={isActive ? "secondary" : "ghost"}
                   className="w-full justify-start"
-                  onClick={() =>
+                  onClick={() =>{
                     setActiveView({ type: "folder", folderId: folder.$id })
-                  }
+                    router.push("/folders/unsaved")
+                  }}
                   title="System folder (cannot rename/delete)"
                 >
                   {folder.name}
