@@ -72,6 +72,8 @@ export default function Popup() {
     },
   })
 
+    const [open, setOpen] = useState(false)
+
   const { isSubmitting } = form.formState
 
   // -------------------- UI state --------------------
@@ -89,6 +91,15 @@ export default function Popup() {
       setFolders(res.rows)
     })
   }, [userid])
+
+
+  /* -------------------- Reset state on open -------------------- */
+  useEffect(() => {
+    if (open) {
+      setStatus(null)
+    }
+  }, [open])
+
 
   // -------------------- Submit --------------------
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -112,7 +123,7 @@ export default function Popup() {
 
   // -------------------- UI --------------------
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="default" size="sm" disabled={!userid}>
           <Plus className="mr-1 h-4 w-4" />
