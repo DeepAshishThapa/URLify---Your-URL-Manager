@@ -9,19 +9,22 @@ import { useDispatch } from "react-redux"
 import type { RootState } from "../store/store"
 import authservice from "@/Appwrite/AuthService/Api"
 import { logout } from "@/Appwrite/AuthService/authSlice"
-import { useEffect, useState } from "react"
-import { User, Plus } from "lucide-react"
+import { User } from "lucide-react"
 import { usePathname } from "next/navigation"
 import Popup from "./Popup"
+import { useRouter } from "next/navigation"
 
 
 export default function Navbar() {
   const dispatch = useDispatch()
   const pathname = usePathname()
+  const router= useRouter()
 
-  const [userName, setuserName] = useState("")
+  
 
   const authStatus = useSelector((state: RootState) => state.auth.status)
+  const userData = useSelector((state: RootState) => state.auth.userData)
+  const userName = userData?.name ?? ""
 
   const hideAddLinkRoutes = ["/login", "/signup"]
   const showAddLink =
@@ -34,28 +37,14 @@ export default function Navbar() {
     { name: "Logout", path: '/', active: authStatus }
   ]
 
-  useEffect(() => {
-    if (!authStatus) {
-      setuserName("")
-      return;
-    }
-    authservice.getAccount().then((res) => {
-      if (res) {
-        setuserName(res.name)
-      }
-      else {
-        setuserName("")
-      }
-    })
-
-
-  }, [authStatus])
 
   const handleLogout = async () => {
 
     try {
       const result = await authservice.Logout()
       dispatch(logout())
+      router.push("/")
+
 
     }
     catch (error) {
@@ -76,10 +65,7 @@ export default function Navbar() {
         <div className="flex items-center gap-5 ">
           <Menubar />
 
-          <Button variant="outline" size="sm" className="hidden sm:inline-flex" asChild>
-            <Link href="/">Home</Link>
-
-          </Button>
+         
 
            {showAddLink && (
           <Popup/>

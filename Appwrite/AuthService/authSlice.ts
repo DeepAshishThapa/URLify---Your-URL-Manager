@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState:{status:boolean,userData:{} | null}={
+const initialState:{status:boolean,userData:any | null}={
     status: false,
     userData:null
 

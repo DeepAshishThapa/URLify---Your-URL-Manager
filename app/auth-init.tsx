@@ -6,9 +6,11 @@ import { useDispatch } from "react-redux"
 import authservice from "@/Appwrite/AuthService/Api"
 import { login, logout } from "@/Appwrite/AuthService/authSlice"
 
+
 export default function AuthInit({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch()
-
+  
+  
   useEffect(() => {
     authservice
       .getAccount()

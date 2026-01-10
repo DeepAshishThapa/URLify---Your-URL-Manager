@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authreducer from "../Appwrite/AuthService/authSlice"
 
-const store=configureStore({
+export const store=configureStore({
     reducer:{
         auth:authreducer
     }
@@ -9,4 +9,5 @@ const store=configureStore({
     
 })
 
-export default store 
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
