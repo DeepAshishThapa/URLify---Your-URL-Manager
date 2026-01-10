@@ -169,6 +169,8 @@ export default function Menubar() {
 
     if (activeView.type === "folder" && activeView.folderId === folder.$id) {
       setActiveView({ type: "all" });
+      router.push("/")
+
     }
   }
 
