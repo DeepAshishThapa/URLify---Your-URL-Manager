@@ -18,9 +18,9 @@ import { useRouter } from "next/navigation"
 export default function Navbar() {
   const dispatch = useDispatch()
   const pathname = usePathname()
-  const router= useRouter()
+  const router = useRouter()
 
-  
+
 
   const authStatus = useSelector((state: RootState) => state.auth.status)
   const userData = useSelector((state: RootState) => state.auth.userData)
@@ -63,13 +63,13 @@ export default function Navbar() {
 
       <nav className="w-full flex items-center justify-between  px-4 py-3 border-b">
         <div className="flex items-center gap-5 ">
-          <Menubar />
+          {authStatus && (
+            <>
+              <Menubar />
 
-         
-
-           {showAddLink && (
-          <Popup/>
-        )}
+              {showAddLink && <Popup />}
+            </>
+          )}
 
         </div>
 
