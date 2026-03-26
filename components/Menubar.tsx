@@ -169,7 +169,7 @@ export default function Menubar() {
 
     if (activeView.type === "folder" && activeView.folderId === folder.$id) {
       setActiveView({ type: "all" });
-      router.push("/")
+      router.push("/home")
 
     }
   }
@@ -195,7 +195,7 @@ export default function Menubar() {
             className="w-full justify-start"
             onClick={
               () => {setActiveView({ type: "all" })
-              router.push("/")}
+              router.push("/home")}
             }
           >
             All

@@ -55,7 +55,7 @@ function Login() {
             setStatus("success")
 
             setTimeout(() => {
-                router.push("/");
+                router.push("/home");
             }, 1200);
 
         }
